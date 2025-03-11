@@ -11,6 +11,7 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
         }
 
         const dadosToken = jwt.verify(token, process.env.JWT_SECRET)
+        next()
 
     }catch{
         res.status(401).json("Token inválido")
