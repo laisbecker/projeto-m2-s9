@@ -4,6 +4,8 @@ import { AppDataSource } from "./data-source"
 import express from "express"
 import cors from "cors"
 import authenticate from "./middleware/authenticate"
+import { Role } from "./entity/Role"
+import { Permission } from "./entity/Permission"
 
 const app = express()
 
