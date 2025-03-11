@@ -1,6 +1,9 @@
+import dotenv from "dotenv"
+dotenv.config
 import { AppDataSource } from "./data-source"
 import express from "express"
 import cors from "cors"
+import authenticate from "./middleware/authenticate"
 
 const app = express()
 
@@ -11,7 +14,7 @@ import medicamentosRouter from "./routes/medicamento.routes"
 app.use(cors())
 app.use(express.json())
 
-app.use("/users", userRouter)
+app.use("/users", authenticate, userRouter)
 app.use("/login", authRouter)
 app.use("/medicamentos", medicamentosRouter)
 
