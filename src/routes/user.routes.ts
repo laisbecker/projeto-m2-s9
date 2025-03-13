@@ -7,11 +7,11 @@ const userRouter = Router()
 
 const userRepository = AppDataSource.getRepository(User)
 
-userRouter.post("/", async (req: Request, res: Response) => {
+userRouter.post("/",  async (req: Request, res: Response) => {
     try {
         const userBody = req.body
 
-        if (!userBody || !userBody.email || userBody.nome || !userBody.senha) {
+        if (!userBody || !userBody.email || !userBody.firstName || !userBody.senha) {
             res.status(400).json("Preencha todos os dados!")
             return
         }
