@@ -1,3 +1,5 @@
+import dotenv from "dotenv"
+dotenv.config()
 import { Request, Response, Router } from "express";
 import { User } from "../entity/User";
 import bcrypt from "bcrypt";
@@ -25,6 +27,10 @@ authRouter.post("/", async (req: Request, res: Response) => {
 
         const valido = await bcrypt.compare(userBody.senha, user.senha)
 
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET não está definido no .env!");
+        }
+
         if(valido){
 
             const payload = {
@@ -41,7 +47,8 @@ authRouter.post("/", async (req: Request, res: Response) => {
             return
         }
 
-    } catch (ex){
+    } catch(ex){
+        console.error("Erro no login:", ex)
         res.status(500).json("Não foi possível executar a solicitação")
     }
 })

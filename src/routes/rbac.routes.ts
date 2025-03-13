@@ -3,6 +3,7 @@ import { AppDataSource } from "../data-source";
 import { Permission } from "../entity/Permission";
 import { Role } from "../entity/Role";
 import { User } from "../entity/User";
+import authenticate from "../middleware/authenticate";
 
 const userRepository = AppDataSource.getRepository(User)
 const roleRepository = AppDataSource.getRepository(Role)
@@ -10,7 +11,7 @@ const permissionRepository = AppDataSource.getRepository(Permission)
 
 const rbacRouter = Router()
 
-rbacRouter.get("/listAllRoles", async (req: Request, res: Response) => {
+rbacRouter.get("/listAllRoles", authenticate([]), async (req: Request, res: Response) => {
     try {
         const roles = await roleRepository.find({
             relations: ["permissions"]
@@ -22,7 +23,7 @@ rbacRouter.get("/listAllRoles", async (req: Request, res: Response) => {
     }
 })
 
-rbacRouter.get("/listAllPermissions", async (req: Request, res: Response) => {
+rbacRouter.get("/listAllPermissions", authenticate([]), async (req: Request, res: Response) => {
     try {
         const permissions = await permissionRepository.find()
 
@@ -32,7 +33,7 @@ rbacRouter.get("/listAllPermissions", async (req: Request, res: Response) => {
     }
 })
 
-rbacRouter.post("/addRole", async (req: Request, res: Response) => {
+rbacRouter.post("/addRole", authenticate([]), async (req: Request, res: Response) => {
     try {
         const roleBody = req.body as Role
 
@@ -49,7 +50,7 @@ rbacRouter.post("/addRole", async (req: Request, res: Response) => {
     }
 })
 
-rbacRouter.post("/addPermission", async (req: Request, res: Response) => {
+rbacRouter.post("/addPermission", authenticate([]), async (req: Request, res: Response) => {
     try {
         const permissionBody = req.body as Permission
 
@@ -66,7 +67,7 @@ rbacRouter.post("/addPermission", async (req: Request, res: Response) => {
     }
 })
 
-rbacRouter.post("/addPermissionToRole", async (req: Request, res: Response) => {
+rbacRouter.post("/addPermissionToRole", authenticate([]), async (req: Request, res: Response) => {
     try {
         const permissionRoleBody = req.body as {
             permissionId: number
@@ -110,7 +111,7 @@ rbacRouter.post("/addPermissionToRole", async (req: Request, res: Response) => {
     }
 })
 
-rbacRouter.post("/addRoleToUser", async (req: Request, res: Response) => {
+rbacRouter.post("/addRoleToUser", authenticate([]), async (req: Request, res: Response) => {
     try {
         const userRoleBody = req.body as {
             roleId: number
